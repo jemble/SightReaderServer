@@ -38,7 +38,7 @@ public class ClientThread extends Thread {
     private static ObjectOutputStream objOutStream = null;
     private static Socket clientConn = null;
     private static String fileName;
-    private static String xmlString;
+    private static String tempo;
     
     public ClientThread(Socket clientConn){
         this.clientConn = clientConn;
@@ -65,20 +65,20 @@ public class ClientThread extends Thread {
             System.out.println("Communication error when getting filename: "+ex.getLocalizedMessage());
         }
         
-        //get the xml script contents from client
+        //get the tempo from the client
         try{
-            xmlString = receiveMessage();
+            tempo = receiveMessage();
         }
         catch(ClassNotFoundException ex){
-            System.out.println("No class definition found when getting xmlstring: "+ex.getLocalizedMessage());
+            System.out.println("No class definition found when getting tempo: "+ex.getLocalizedMessage());
         }
         catch(IOException ex){
-            System.out.println("Communication error when getting xmlstring: "+ex.getLocalizedMessage());
+            System.out.println("Communication error when getting tempo: "+ex.getLocalizedMessage());
         }
         
         //write the xml to file
         try{
-            writeXml(xmlString);
+            writeXml();
         }
         catch(FileNotFoundException ex){
             System.out.println("Could not file found when writing xml: "+ex.getLocalizedMessage());
@@ -201,11 +201,25 @@ public class ClientThread extends Thread {
      * @param xml the string to write to the xml file
      * @throws FileNotFoundException 
      */
-    private static void writeXml(String xml) throws FileNotFoundException{
+    private static void writeXml() throws FileNotFoundException{
         PrintWriter outWriter = new PrintWriter(FILE_LOC+fileName+".xml");
+        String xml = makeXmlString();
         outWriter.println(xml);
         outWriter.flush();
         outWriter.close();
+    }
+    
+    private static String makeXmlString(){
+        String xml = "";
+        xml += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
+        xml += "<script file=\""+FILE_LOC+fileName+"\">";
+        xml += "<parameters><language>eng</language>";
+        xml += "<tempo>"+tempo+"</tempo>";
+        xml += "adaptive-filter mean-coeff=\"0.7\" std-dev-coeff=\"0.9\"/>";
+        xml += "</parameters><step name=\"SCORE\"/>";
+        xml += "<export path=\""+FILE_LOC+fileName+".xml\"/>";
+        xml += "</script>";
+        return xml;
     }
     
     /**
