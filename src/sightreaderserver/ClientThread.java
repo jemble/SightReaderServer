@@ -113,6 +113,7 @@ public class ClientThread extends Thread {
         
         //process with audiveris
         try{
+            System.out.println("Processing with audiveris");
             runCommand(createCommandString(1), false);
         }
         catch(IOException ex){
@@ -126,6 +127,7 @@ public class ClientThread extends Thread {
         //process with musicxml2mid
         if(curStatus == STATUS_OK){
             try{
+                System.out.println("Processing with musicxmlmid");
                 runCommand(createCommandString(2),true);
             }
             catch(IOException ex){
@@ -165,6 +167,7 @@ public class ClientThread extends Thread {
     
     public static void setCurStatus(int status){
         curStatus = status;
+        System.out.println("current status: "+curStatus);
     }
     
     /**
@@ -174,6 +177,7 @@ public class ClientThread extends Thread {
     private static void createObjectStreams() throws IOException{
         objInStream = new ObjectInputStream(clientConn.getInputStream());
         objOutStream = new ObjectOutputStream(clientConn.getOutputStream());
+        System.out.println("Creating streams");
     }
     
     /**
@@ -184,6 +188,7 @@ public class ClientThread extends Thread {
      */
     private static String receiveMessage() throws IOException, ClassNotFoundException{
         String msg = objInStream.readObject().toString();
+        System.out.println("received message: "+msg);
         return msg;
     }
     
@@ -194,6 +199,7 @@ public class ClientThread extends Thread {
     private static void sendCurrentStatus() throws IOException{
         objOutStream.writeInt(curStatus);
         objOutStream.flush();
+        System.out.println("sending status: "+curStatus);
     }
      
     /**
@@ -202,7 +208,7 @@ public class ClientThread extends Thread {
      * @throws FileNotFoundException 
      */
     private static void writeXml() throws FileNotFoundException{
-        PrintWriter outWriter = new PrintWriter(FILE_LOC+fileName+".xml");
+        PrintWriter outWriter = new PrintWriter(FILE_LOC+"script_"+fileName+".xml");
         String xml = makeXmlString();
         outWriter.println(xml);
         outWriter.flush();
@@ -212,13 +218,14 @@ public class ClientThread extends Thread {
     private static String makeXmlString(){
         String xml = "";
         xml += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
-        xml += "<script file=\""+FILE_LOC+fileName+"\">";
+        xml += "<script file=\""+FILE_LOC+fileName+".jpg\">";
         xml += "<parameters><language>eng</language>";
         xml += "<tempo>"+tempo+"</tempo>";
-        xml += "adaptive-filter mean-coeff=\"0.7\" std-dev-coeff=\"0.9\"/>";
+        xml += "<adaptive-filter mean-coeff=\"0.7\" std-dev-coeff=\"0.9\"/>";
         xml += "</parameters><step name=\"SCORE\"/>";
         xml += "<export path=\""+FILE_LOC+fileName+".xml\"/>";
         xml += "</script>";
+        System.out.println("xml generated: "+xml);
         return xml;
     }
     
@@ -234,6 +241,7 @@ public class ClientThread extends Thread {
         FileOutputStream mediaStream = new FileOutputStream(FILE_LOC+fileName+".jpg");
         mediaStream.write(byteArray);
         mediaStream.close();
+        System.out.println("getting file "+FILE_LOC+fileName+".jpg");
     }
     
     /**
@@ -244,13 +252,14 @@ public class ClientThread extends Thread {
      */
     private static void sendFile(String file) throws FileNotFoundException, IOException{
         FileInputStream fileIn = new FileInputStream(file);
-        long fileLen = (new File(fileName)).length();
+        long fileLen = (new File(file)).length();
         int intFileLen = (int)fileLen;
         byte[] byteArray = new byte[intFileLen];
         fileIn.read(byteArray);
         fileIn.close();
         objOutStream.writeObject(byteArray);
         objOutStream.flush();
+        System.out.println("Sending file "+file + " of length: "+fileLen);
     }
     
     /**
@@ -290,7 +299,7 @@ public class ClientThread extends Thread {
             case 1:
                 String[] javaCommands = {"java","-jar",DIST_LOC+"audiveris.jar",
                     "-batch", 
-                    "-script", FILE_LOC+fileName+".xml"};
+                    "-script", FILE_LOC+"script_"+fileName+".xml"};
                 return javaCommands;
             case 2:
                 String[] perlCommands =  {"perl", 
@@ -310,6 +319,7 @@ public class ClientThread extends Thread {
         objInStream.close();
         objOutStream.close();
         clientConn.close();
+        System.out.println("cleaning up");
     }
 }
     
