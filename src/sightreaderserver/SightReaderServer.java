@@ -33,10 +33,10 @@ public class SightReaderServer {
         //create the server socket
         try{
             serverSocket = new ServerSocket(PORT_NUM);
-            System.out.println("createing socket "+PORT_NUM);
+            System.out.println("Creating socket "+PORT_NUM);
         }
         catch(IOException ex){
-            System.out.println("problem creating serversocket in main: "+ex.getLocalizedMessage());
+            System.out.println("Problem creating serversocket in main: "+ex.getLocalizedMessage());
         }
         
         //main loop
@@ -44,15 +44,17 @@ public class SightReaderServer {
             
             //create client socket connection
             try {
+                
                 clientConn = serverSocket.accept();
-                System.out.println("accepting connections from "+clientConn.getInetAddress());
+                System.out.println("\n***************************** NEW CLIENT *************************************");
+                System.out.println("Accepting connections from "+clientConn.getInetAddress());
             }
             catch(IOException ex){
                 System.out.println("Problem creating client socket: "+ex.getLocalizedMessage());
             }
                
             ClientThread cThread = new ClientThread(clientConn);
-            System.out.println("Starting processign thread");
+            System.out.println("Starting processing thread");
             cThread.start();
             
         }
