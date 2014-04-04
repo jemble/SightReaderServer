@@ -186,7 +186,7 @@ public class ClientThread extends Thread {
         
         System.out.println("Status: "+curStatus);
         curStatus = STATUS_OK;
-        System.out.println("\n***************************** END CLIENT *************************************");
+        System.out.println("***************************** END CLIENT *************************************\n");
     }
         
     
@@ -247,7 +247,7 @@ public class ClientThread extends Thread {
         xml += "<parameters><language>eng</language>";
         xml += "<tempo>"+tempo+"</tempo>";
         xml += "<adaptive-filter mean-coeff=\"0.7\" std-dev-coeff=\"0.9\"/>";
-        xml += "</parameters><step name=\"SCORE\"/>";
+        xml += "</parameters><part name=\"Part_1\" program=\"7\"/><step name=\"SCORE\"/>";
         xml += "<export path=\""+FILE_LOC+fileName+".xml\"/>";
         xml += "</script>";
         System.out.println("xml generated: "+xml);
@@ -348,6 +348,10 @@ public class ClientThread extends Thread {
         picFile.delete();
         File midFile = new File(FILE_LOC+fileName+".midi");
         midFile.delete();
+        File xml = new File(FILE_LOC+fileName+".xml");
+        xml.delete();
+        File xmlScript = new File("script_"+FILE_LOC+fileName+".xml");
+        xmlScript.delete();
         System.out.println("cleaning up");
     }
 }
