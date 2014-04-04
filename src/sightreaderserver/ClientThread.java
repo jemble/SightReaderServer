@@ -54,6 +54,8 @@ public class ClientThread extends Thread {
             System.out.println("problem creating streams: "+ex.getLocalizedMessage());
         }
         
+        System.out.println("Status: "+curStatus);
+        
         //get the filename from the client
         try{
             fileName = receiveMessage();
@@ -65,6 +67,8 @@ public class ClientThread extends Thread {
             System.out.println("Communication error when getting filename: "+ex.getLocalizedMessage());
         }
         
+        System.out.println("Status: "+curStatus);
+    
         //get the tempo from the client
         try{
             tempo = receiveMessage();
@@ -76,6 +80,8 @@ public class ClientThread extends Thread {
             System.out.println("Communication error when getting tempo: "+ex.getLocalizedMessage());
         }
         
+        System.out.println("Status: "+curStatus);
+        
         //write the xml to file
         try{
             writeXml();
@@ -84,6 +90,8 @@ public class ClientThread extends Thread {
             System.out.println("Could not file found when writing xml: "+ex.getLocalizedMessage());
         }
         
+        System.out.println("Status: "+curStatus);
+        
         //send current status to client
         try{
             sendCurrentStatus();
@@ -91,6 +99,8 @@ public class ClientThread extends Thread {
         catch(IOException ex){
             System.out.println("Problem sending current status: "+ex.getLocalizedMessage());
         }
+        
+        System.out.println("Status: "+curStatus);
         
         //get the picture file
         try{
@@ -103,6 +113,8 @@ public class ClientThread extends Thread {
             System.out.println("Comms error when getting image file: "+ex.getLocalizedMessage());
         }
         
+        System.out.println("Status: "+curStatus);
+        
         //send current status to client
         try{
             sendCurrentStatus();
@@ -110,6 +122,8 @@ public class ClientThread extends Thread {
         catch(IOException ex){
             System.out.println("problem sending current status: "+ex.getLocalizedMessage());
         }
+        
+        System.out.println("Status: "+curStatus);
         
         //process with audiveris
         try{
@@ -123,6 +137,8 @@ public class ClientThread extends Thread {
             System.out.println("The process was interrupted when running audiveris command: "+ex.getLocalizedMessage());
             curStatus = STATUS_AUDI_PROB;
         }
+        
+        System.out.println("Status: "+curStatus);
         
         //process with musicxml2mid
         if(curStatus == STATUS_OK){
@@ -138,6 +154,8 @@ public class ClientThread extends Thread {
             }
         }
         
+        System.out.println("Status: "+curStatus);
+        
         //send status to client
         try{
             sendCurrentStatus();
@@ -145,6 +163,8 @@ public class ClientThread extends Thread {
         catch(IOException ex){
             System.out.println("Comms error when sending status: "+ex.getLocalizedMessage());
         }
+        
+        System.out.println("Status: "+curStatus);
         
         //send the midi file to the client
         try{
@@ -154,6 +174,8 @@ public class ClientThread extends Thread {
             System.out.println("Comms problem when trying to send midi: "+ex.getLocalizedMessage());
         }
         
+        System.out.println("Status: "+curStatus);
+        
         //clean up
         try{
             cleanUp();
@@ -162,6 +184,9 @@ public class ClientThread extends Thread {
             System.out.println("Problem closing the streams: "+ex.getLocalizedMessage());
         }
         
+        System.out.println("Status: "+curStatus);
+        curStatus = STATUS_OK;
+        System.out.println("***************************** END CLIENT *************************************\n");
     }
         
     
@@ -222,7 +247,7 @@ public class ClientThread extends Thread {
         xml += "<parameters><language>eng</language>";
         xml += "<tempo>"+tempo+"</tempo>";
         xml += "<adaptive-filter mean-coeff=\"0.7\" std-dev-coeff=\"0.9\"/>";
-        xml += "</parameters><step name=\"SCORE\"/>";
+        xml += "</parameters><part name=\"Part_1\" program=\"7\"/><step name=\"SCORE\"/>";
         xml += "<export path=\""+FILE_LOC+fileName+".xml\"/>";
         xml += "</script>";
         System.out.println("xml generated: "+xml);
@@ -319,6 +344,14 @@ public class ClientThread extends Thread {
         objInStream.close();
         objOutStream.close();
         clientConn.close();
+        File picFile = new File(FILE_LOC+fileName+".jpg");
+        picFile.delete();
+        File midFile = new File(FILE_LOC+fileName+".midi");
+        midFile.delete();
+        File xml = new File(FILE_LOC+fileName+".xml");
+        xml.delete();
+        File xmlScript = new File("script_"+FILE_LOC+fileName+".xml");
+        xmlScript.delete();
         System.out.println("cleaning up");
     }
 }
