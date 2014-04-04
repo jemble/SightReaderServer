@@ -53,6 +53,9 @@ public class StreamHandler extends Thread {
                     else if(line.contains("Illegal")){
                         ClientThread.setCurStatus(ClientThread.STATUS_XML_PROB);
                     }
+                    else if(line.contains("opus with no tracks")){
+                    	ClientThread.setCurStatus(ClientThread.STATUS_XML_PROB);
+                    }                   
                 }
             }
             else {
