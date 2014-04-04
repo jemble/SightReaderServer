@@ -32,7 +32,7 @@ public class ClientThread extends Thread {
     private static final String LOCAL_DIST_LOC = "/usr/bin/audiveris/AudiverisApp/dist/";
     private static final String REMOTE_DIST_LOC = "/usr/share/audiveris/dist/";
     
-    private static final String DIST_LOC = LOCAL_DIST_LOC;
+    private static final String DIST_LOC = REMOTE_DIST_LOC;
     
     private static ObjectInputStream objInStream = null;
     private static ObjectOutputStream objOutStream = null;
