@@ -247,7 +247,7 @@ public class ClientThread extends Thread {
         xml += "<parameters><language>eng</language>";
         xml += "<tempo>"+tempo+"</tempo>";
         xml += "<adaptive-filter mean-coeff=\"0.7\" std-dev-coeff=\"0.9\"/>";
-        xml += "</parameters><part name=\"Part_1\" program=\"7\"/><step name=\"SCORE\"/>";
+        xml += "<part name=\"Part_1\" program=\"7\"/></parameters><step name=\"SCORE\"/>";
         xml += "<export path=\""+FILE_LOC+fileName+".xml\"/>";
         xml += "</script>";
         System.out.println("xml generated: "+xml);
