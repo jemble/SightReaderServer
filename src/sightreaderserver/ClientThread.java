@@ -44,6 +44,9 @@ public class ClientThread extends Thread {
         this.clientConn = clientConn;
     }
     
+    /**
+     * The main action of the thread.
+     */
     public void run(){
         
         //create our streams
@@ -189,7 +192,10 @@ public class ClientThread extends Thread {
         System.out.println("***************************** END CLIENT *************************************\n");
     }
         
-    
+    /**
+     * Sets the current status
+     * @param status the status to set. Use ClientThread constants
+     */
     public static void setCurStatus(int status){
         curStatus = status;
         System.out.println("current status: "+curStatus);
@@ -240,6 +246,10 @@ public class ClientThread extends Thread {
         outWriter.close();
     }
     
+    /**
+     * Creates the XML for the processing script
+     * @return the XML as a String
+     */
     private static String makeXmlString(){
         String xml = "";
         xml += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
@@ -344,15 +354,15 @@ public class ClientThread extends Thread {
         objInStream.close();
         objOutStream.close();
         clientConn.close();
-//        File picFile = new File(FILE_LOC+fileName+".jpg");
-//        picFile.delete();
-//        File midFile = new File(FILE_LOC+fileName+".midi");
-//        midFile.delete();
-//        File xml = new File(FILE_LOC+fileName+".xml");
-//        xml.delete();
-//        File xmlScript = new File("script_"+FILE_LOC+fileName+".xml");
-//        xmlScript.delete();
-//        System.out.println("cleaning up");
+        File picFile = new File(FILE_LOC+fileName+".jpg");
+        picFile.delete();
+        File midFile = new File(FILE_LOC+fileName+".midi");
+        midFile.delete();
+        File xml = new File(FILE_LOC+fileName+".xml");
+        xml.delete();
+        File xmlScript = new File("script_"+FILE_LOC+fileName+".xml");
+        xmlScript.delete();
+        System.out.println("cleaning up");
     }
 }
     
