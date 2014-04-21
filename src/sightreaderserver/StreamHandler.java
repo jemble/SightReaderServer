@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 import java.util.logging.Logger;
 
 /**
- *
+ *Class to handle I/O of natively ran processes
  * @author jeremy
  */
 public class StreamHandler extends Thread {
@@ -37,6 +37,9 @@ public class StreamHandler extends Thread {
         this.os = redirect;
     }
 
+    /**
+     * The main action of the thread
+     */
     public void run() {
         try {
             if (os == null) {
