@@ -247,7 +247,7 @@ public class ClientThread extends Thread {
         xml += "<parameters><language>eng</language>";
         xml += "<tempo>"+tempo+"</tempo>";
         xml += "<adaptive-filter mean-coeff=\"0.7\" std-dev-coeff=\"0.9\"/>";
-        xml += "<part name=\"Part_1\" program=\"7\"/></parameters><step name=\"SCORE\"/>";
+        xml += "</parameters><step name=\"SCORE\"/>";
         xml += "<export path=\""+FILE_LOC+fileName+".xml\"/>";
         xml += "</script>";
         System.out.println("xml generated: "+xml);
@@ -344,15 +344,15 @@ public class ClientThread extends Thread {
         objInStream.close();
         objOutStream.close();
         clientConn.close();
-        File picFile = new File(FILE_LOC+fileName+".jpg");
-        picFile.delete();
-        File midFile = new File(FILE_LOC+fileName+".midi");
-        midFile.delete();
-        File xml = new File(FILE_LOC+fileName+".xml");
-        xml.delete();
-        File xmlScript = new File("script_"+FILE_LOC+fileName+".xml");
-        xmlScript.delete();
-        System.out.println("cleaning up");
+//        File picFile = new File(FILE_LOC+fileName+".jpg");
+//        picFile.delete();
+//        File midFile = new File(FILE_LOC+fileName+".midi");
+//        midFile.delete();
+//        File xml = new File(FILE_LOC+fileName+".xml");
+//        xml.delete();
+//        File xmlScript = new File("script_"+FILE_LOC+fileName+".xml");
+//        xmlScript.delete();
+//        System.out.println("cleaning up");
     }
 }
     
